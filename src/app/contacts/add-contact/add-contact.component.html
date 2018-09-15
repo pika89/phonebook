@@ -1,7 +1,7 @@
 <mat-card class="container">
   <h1 mat-dialog-title>Add new contact</h1>
   <div style="width: 100%" mat-dialog-content>
-    <form>
+    <form (keydown.enter)="addContact()">
       <mat-form-field>
         <label>First Name:</label>
         <input matInput [(ngModel)]="firstName" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
@@ -26,6 +26,6 @@
   </div>
   <div mat-dialog-actions>
     <a routerLink="/" mat-button>Back</a>
-    <button mat-button (click)="addContact()" cdkFocusInitial>Add</button>
+    <button mat-button (click)="addContact()"  cdkFocusInitial>Add</button>
   </div>
 </mat-card>

@@ -1,7 +1,7 @@
 <mat-card class="container">
   <h1 mat-dialog-title>Edit contact</h1>
   <div style="width: 100%" mat-dialog-content>
-    <form>
+    <form (keydown.enter)="saveContact()">
       <mat-form-field>
         <label>First Name:</label>
         <input matInput [(ngModel)]="firstName" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
