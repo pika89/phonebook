@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "untitled2": {
+    "phonebook": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/untitled2",
+            "outputPath": "dist/phonebook",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "untitled2:build"
+            "browserTarget": "phonebook:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "untitled2:build:production"
+              "browserTarget": "phonebook:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "untitled2:build"
+            "browserTarget": "phonebook:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "untitled2-e2e": {
+    "phonebook-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "targets": {
@@ -103,11 +103,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "untitled2:serve"
+            "devServerTarget": "phonebook:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "untitled2:serve:production"
+              "devServerTarget": "phonebook:serve:production"
             }
           }
         },
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "untitled2"
+  "defaultProject": "phonebook"
 }
