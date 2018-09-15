@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
+    "postinstall": "ng build --aot -prod",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -12,6 +13,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.7",
+    "@angular/cli": "^6.2.2",
     "@angular/cdk": "^6.4.7",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
@@ -28,7 +30,6 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.8.2",
-    "@angular/cli": "^6.2.2",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
     "@types/jasmine": "~2.8.8",
