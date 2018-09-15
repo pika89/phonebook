@@ -14,3 +14,9 @@ mat-icon{
 button {
   margin: 16px 0px;
 }
+
+.add-button{
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}

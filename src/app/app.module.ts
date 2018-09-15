@@ -1,12 +1,19 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {
+  ErrorStateMatcher,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatInputModule, ShowOnDirtyErrorStateMatcher
+} from '@angular/material';
 import {MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {AppComponent} from './app.component';
 import {DialogComponent} from './popups/dialog/dialog.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { DeleteDialogComponent } from './popups/delete-dialog/delete-dialog.component';
 
 @NgModule({
@@ -19,6 +26,7 @@ import { DeleteDialogComponent } from './popups/delete-dialog/delete-dialog.comp
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatCheckboxModule,
     MatTableModule,
@@ -32,7 +40,9 @@ import { DeleteDialogComponent } from './popups/delete-dialog/delete-dialog.comp
     MatInputModule
   ],
   entryComponents: [DialogComponent, DeleteDialogComponent],
-  providers: [],
+  providers: [{
+    provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

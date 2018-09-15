@@ -51,7 +51,10 @@ export class AppComponent implements OnInit {
   }
 
   addContact() {
-    this.addDialogRef = this.dialog.open(DialogComponent);
+    this.addDialogRef = this.dialog.open(DialogComponent,{
+      height: '400px',
+      width: '600px',
+    });
   }
 
 }

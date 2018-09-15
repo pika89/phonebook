@@ -1,6 +1,6 @@
-<button mat-raised-button (click)="addContact()"> Add contact </button>
+<section class="mat-typography">
+<h1 class="headline">List of Contacts</h1>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
   <!-- Firstname Column -->
   <ng-container matColumnDef="firstname">
     <th mat-header-cell *matHeaderCellDef> Firstname </th>
@@ -35,3 +35,5 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
+<button class="add-button" mat-fab (click)="addContact()"><mat-icon>add</mat-icon> </button>
+</section>

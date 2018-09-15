@@ -1,21 +1,31 @@
-<h1 mat-dialog-title>Add new contact</h1>
-<div mat-dialog-content>
-  <mat-form-field>
-    <label>First Name:</label>
-    <input matInput [(ngModel)]="firstName">
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <label>Last Name:</label>
-    <input matInput [(ngModel)]="lastName">
-  </mat-form-field>
-  <br>
-  <mat-form-field>
-    <label>Phone Number:</label>
-    <input matInput [(ngModel)]="phoneNumber">
-  </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="addContact()" cdkFocusInitial>Add</button>
+<div class="container">
+  <h1 mat-dialog-title>Add new contact</h1>
+  <div style="width: 100%" mat-dialog-content>
+    <form>
+      <mat-form-field>
+        <label>First Name:</label>
+        <input matInput [(ngModel)]="firstName" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="firstNameFormControl.hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <label>Last Name:</label>
+        <input matInput [(ngModel)]="lastName" [formControl]="lastNameFormControl" [errorStateMatcher]="matcher">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <label>Phone Number:</label>
+        <input matInput [(ngModel)]="phoneNumber" [formControl]="phoneFormControl" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="phoneFormControl.hasError('required')">
+          Phone number is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="addContact()" cdkFocusInitial>Add</button>
+  </div>
 </div>
