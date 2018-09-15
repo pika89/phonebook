@@ -6,7 +6,7 @@
         <label>First Name:</label>
         <input matInput [(ngModel)]="firstName" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="firstNameFormControl.hasError('required')">
-          Email is <strong>required</strong>
+          First name is <strong>required</strong>
         </mat-error>
       </mat-form-field>
       <br>
@@ -17,7 +17,7 @@
       <br>
       <mat-form-field>
         <label>Phone Number:</label>
-        <input matInput [(ngModel)]="phoneNumber" [formControl]="phoneFormControl" [errorStateMatcher]="matcher">
+        <input matInput type="number" [(ngModel)]="phoneNumber" [formControl]="phoneFormControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="phoneFormControl.hasError('required')">
           Phone number is <strong>required</strong>
         </mat-error>
