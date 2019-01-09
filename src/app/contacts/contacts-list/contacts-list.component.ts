@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatDialogRef, MatTableDataSource, MatTabLabel} from '@angular/material';
 import {DeleteDialogComponent} from '../../popups/delete-dialog/delete-dialog.component';
 import {CommunicationServiceService} from '../../shared/communication-service.service';
 import { FormControl } from '@angular/forms';
@@ -25,7 +25,7 @@ export interface Contacts {
 export class ContactsListComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'username', 'email', 'phone', 'edit', 'delete'];
-  dataSource: Contacts[];
+  dataSource = new MatTableDataSource<Contacts>();
   deleteDialogRef: MatDialogRef<DeleteDialogComponent>;
   title: string;
 
@@ -42,13 +42,13 @@ export class ContactsListComponent implements OnInit {
   public getAllOwners = () => {
     this.rs.getData('users')
     .subscribe(res => {
-      this.dataSource = res as Contacts[];
+      this.dataSource.data = res as Contacts[];
     })
   }
 
   
   deleteContact(hero: Contacts): void {
-    this.dataSource = this.dataSource.filter(h => h !== hero);
+    this.dataSource.data = this.dataSource.data.filter(h => h !== hero);
     this.rs.deleteHero(hero).subscribe();
   }
 
