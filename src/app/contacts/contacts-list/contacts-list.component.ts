@@ -1,13 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef, MatTableDataSource} from '@angular/material';
 import {DeleteDialogComponent} from '../../popups/delete-dialog/delete-dialog.component';
 import {CommunicationServiceService} from '../../shared/communication-service.service';
+import { FormControl } from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import { RepositoryService } from 'src/app/shared/repository-service';
+import { ActivatedRoute,Router, Params } from '@angular/router';
+
 
 export interface Contacts {
   id: number;
-  firstName: string;
-  lastName: string;
-  phoneNumber: number;
+  name: string;
+  username: string;
+  phone: number;
 }
 
 
@@ -18,36 +24,45 @@ export interface Contacts {
 })
 export class ContactsListComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'firstname', 'lastname', 'phonenumber', 'edit', 'delete'];
-  dataSource: any[];
+  displayedColumns: string[] = ['id', 'name', 'username', 'email', 'phone', 'edit', 'delete'];
+  dataSource: Contacts[];
   deleteDialogRef: MatDialogRef<DeleteDialogComponent>;
   title: string;
 
-  constructor(public dialog: MatDialog, public cs: CommunicationServiceService) {
-    this.cs.passDataToContactList
-      .subscribe(
-        (response) => {
-          this.dataSource = response;
-          localStorage.setItem('datasource', JSON.stringify(this.dataSource));
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+
+  constructor(public dialog: MatDialog, public cs: CommunicationServiceService,private activeRoute: ActivatedRoute, private rs: RepositoryService, private router: Router) {
+  
   }
 
 
   ngOnInit() {
-    this.dataSource = JSON.parse(localStorage.getItem('datasource'));
+    this.getAllOwners();
   }
 
-  deleteContact(element) {
-    const index = this.dataSource.indexOf(element);
-    this.deleteDialogRef = this.dialog.open(DeleteDialogComponent);
-    this.cs.passContactObject.next(index);
+  public getAllOwners = () => {
+    this.rs.getData('users')
+    .subscribe(res => {
+      this.dataSource = res as Contacts[];
+    })
   }
 
-  editContact(element){
-    this.cs.passContactObject.next(element);
+  
+  deleteContact(hero: Contacts): void {
+    this.dataSource = this.dataSource.filter(h => h !== hero);
+    this.rs.deleteHero(hero).subscribe();
   }
+
+  editContact = (id: any) => {
+    let url: string = `/contacts/${id.id}/edit`;
+    this.router.navigate([url]);
+  }
+
+  // editContact(element){
+  //   this.cs.passContactObject.next(element);
+  // }
+
+  public doFilter = (value) => {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
+  }
+
 }

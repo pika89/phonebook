@@ -20,3 +20,8 @@ button {
   bottom: 20px;
   right: 20px;
 }
+
+.headline{
+  display: inline-block;
+  margin-right: 20px;
+}

@@ -1,11 +1,14 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+
 import {
   ErrorStateMatcher,
   MatButtonModule, MatCardModule,
   MatCheckboxModule,
   MatDialogModule,
+  MatAutocompleteModule,
   MatFormFieldModule,
   MatInputModule, ShowOnDirtyErrorStateMatcher
 } from '@angular/material';
@@ -42,13 +45,15 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatAutocompleteModule,
     MatCardModule,
     MatCheckboxModule,
     MatTableModule,
     MatIconModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    HttpClientModule
   ],
   exports: [
     MatFormFieldModule,

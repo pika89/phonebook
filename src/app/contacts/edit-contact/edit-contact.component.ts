@@ -3,19 +3,28 @@ import {FormControl, Validators} from '@angular/forms';
 import {CommunicationServiceService} from '../../shared/communication-service.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {MyErrorStateMatcher} from '../add-contact/add-contact.component';
+import { RepositoryService } from 'src/app/shared/repository-service';
+
+
+export interface Contacts {
+  id: number;
+  name: string;
+  username: string;
+  phone: number;
+}
 
 @Component({
   selector: 'app-edit-contact',
   templateUrl: './edit-contact.component.html',
   styleUrls: ['./edit-contact.component.css']
 })
+
+
 export class EditContactComponent implements OnInit {
-  dataSource: any[] = [];
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  contactId: string;
-  result: any;
+  user: Contacts[]=[];
+  name: string;
+  username: string;
+  phone: number;
 
   firstNameFormControl = new FormControl('', [
     Validators.required,
@@ -28,22 +37,25 @@ export class EditContactComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  constructor(public cs: CommunicationServiceService, public router: Router, private activeRoute: ActivatedRoute) {
+  constructor(public cs: CommunicationServiceService, public router: Router, private activeRoute: ActivatedRoute, public rs: RepositoryService) {
+  
   }
 
   ngOnInit() {
-    this.dataSource = JSON.parse(localStorage.getItem('datasource'));
-    this.activeRoute.params.subscribe((params: Params) => {
-      this.contactId = params['id'];
-    });
-    this.result = this.dataSource.find(contact => this.contactId === contact.id.toString());
-    if (this.result) {
-      this.firstName = this.result.firstName;
-      this.lastName = this.result.lastName;
-      this.phoneNumber = this.result.phoneNumber;
-    }
-
+    this.getOwnerDetails();
   }
+  private getOwnerDetails = () =>{
+    let id: string = this.activeRoute.snapshot.params['id'];
+    let apiUrl: string = `users/` + id;
+ 
+    this.rs.getData(apiUrl)
+    .subscribe(res => {
+      this.user = res as Contacts[];
+    },
+    (error) =>{
+    })
+  }
+  
 
   saveContact() {
     this.firstNameFormControl.markAsTouched();
@@ -51,9 +63,9 @@ export class EditContactComponent implements OnInit {
     const index = this.dataSource.indexOf(this.result);
 
     if (this.firstNameFormControl.valid && this.phoneFormControl.valid) {
-      this.dataSource[index].firstName = this.firstName;
-      this.dataSource[index].lastName = this.lastName;
-      this.dataSource[index].phoneNumber = this.phoneNumber;
+      this.dataSource[index].name = this.name;
+      this.dataSource[index].username = this.username;
+      this.dataSource[index].phone = this.phone;
       localStorage.setItem('datasource', JSON.stringify(this.dataSource));
       this.router.navigate(['/']);
     }
