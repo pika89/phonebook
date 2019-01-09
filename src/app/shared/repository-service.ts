@@ -18,7 +18,7 @@ export class RepositoryService {
     urlAddress: 'https://jsonplaceholder.typicode.com';
 
  
-  constructor(private http: HttpClient, private messageService: MessageService) { }
+  constructor(private http: HttpClient) { }
  
   public getData = (route: string) => {
     return this.http.get(this.createCompleteRoute(route, environment.urlAddress));
