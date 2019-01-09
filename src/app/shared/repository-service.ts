@@ -4,7 +4,6 @@ import { environment } from './../../environments/environment';
 import { Contacts } from '../contacts/contacts-list/contacts-list.component';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { MessageService } from 'src/app/shared/message-service';
 
  
 const httpOptions = {
