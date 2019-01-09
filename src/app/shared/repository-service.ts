@@ -42,15 +42,10 @@ export class RepositoryService {
     const url = `https://jsonplaceholder.typicode.com/users/${id}`;
 
     return this.http.delete<Contacts>(url, httpOptions).pipe(
-      tap(_ => this.log(`deleted contact id=${id}`)),
       catchError(this.handleError<Contacts>('deleteContact'))
     );
   }
 
-  private log(message: string) {
-    this.messageService.add(`HeroService: ${message}`);
-  }
- 
   private createCompleteRoute = (route: string, envAddress: string) => {
     return `${envAddress}/${route}`;
   }
