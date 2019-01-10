@@ -4,7 +4,7 @@
     <form (keydown.enter)="saveContact()">
       <mat-form-field>
         <label>Name:</label>
-        <input matInput [(ngModel)]="user.name" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
+        <input matInput [(ngModel)]="contact.name" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="firstNameFormControl.hasError('required')">
           First name is <strong>required</strong>
         </mat-error>
@@ -12,12 +12,12 @@
       <br>
       <mat-form-field>
         <label>Username:</label>
-        <input matInput [(ngModel)]="user.username" [formControl]="lastNameFormControl" [errorStateMatcher]="matcher">
+        <input matInput [(ngModel)]="contact.username" [formControl]="lastNameFormControl" [errorStateMatcher]="matcher">
       </mat-form-field>
       <br>
       <mat-form-field>
         <label>Phone Number:</label>
-        <input matInput [(ngModel)]="user.phone" [formControl]="phoneFormControl" [errorStateMatcher]="matcher">
+        <input matInput [(ngModel)]="contact.phone" [formControl]="phoneFormControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="phoneFormControl.hasError('required')">
           Phone number is <strong>required</strong>
         </mat-error>

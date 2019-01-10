@@ -9,9 +9,5 @@ export class AppComponent implements OnInit{
   dataSource: any[];
 
   ngOnInit(){
-    if(!localStorage.getItem('datasource')){
-      this.dataSource = [];
-      localStorage.setItem('datasource', JSON.stringify(this.dataSource));
-    }
   }
 }

@@ -5,14 +5,6 @@ import {MyErrorStateMatcher} from '../add-contact/add-contact.component';
 import { RepositoryService } from 'src/app/shared/repository-service';
 import { Contact } from 'src/app/shared/contact';
 
-
-export interface Contacts {
-  id: number;
-  name: string;
-  username: string;
-  phone: number;
-}
-
 @Component({
   selector: 'app-edit-contact',
   templateUrl: './edit-contact.component.html',
@@ -21,7 +13,7 @@ export interface Contacts {
 
 
 export class EditContactComponent implements OnInit {
-  user = new Contact();
+  contact = new Contact();
 
   firstNameFormControl = new FormControl('', [
     Validators.required,
@@ -44,13 +36,13 @@ export class EditContactComponent implements OnInit {
   getContact(): void {
     const id = +this.activeRoute.snapshot.paramMap.get('id');
     this.rs.getContact(id)
-      .subscribe(contact => this.user = contact);
+      .subscribe(response => this.contact = response);
   }
 
   saveContact() {
     this.firstNameFormControl.markAsTouched();
     this.phoneFormControl.markAsTouched();
     let id: string = this.activeRoute.snapshot.params['id'];
-    this.rs.updateContact(this.user).subscribe();
+    this.rs.updateContact(this.contact).subscribe();
   }
 }

@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { Contact } from 'src/app/shared/contact';
+import { RepositoryService } from 'src/app/shared/repository-service';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -7,28 +9,23 @@ import {MatDialogRef} from '@angular/material';
   styleUrls: ['./delete-dialog.component.css']
 })
 export class DeleteDialogComponent implements OnInit {
-  dataSource: any[]=[];
-  index: any;
+  contact: Contact[] = [];
 
-
-  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>) {
-    
+  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>, private rs: RepositoryService, @Inject(MAT_DIALOG_DATA) private data: any
+   ) {
   }
-
 
   ngOnInit() {
-    this.dataSource = JSON.parse(localStorage.getItem('datasource'));
   }
 
-  deleteContact(){
-    this.dataSource.splice(this.index, 1);
-    localStorage.setItem('datasource', JSON.stringify(this.dataSource));
-    this.dataSource = JSON.parse(localStorage.getItem('datasource'));
-    this.dialogRef.close();
+  deleteContact(contact: Contact){
+    this.rs.deleteContact(this.data).subscribe();
+    this.dialogRef.close(this.data.full);
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+
   }
 
   }

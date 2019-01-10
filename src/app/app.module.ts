@@ -1,10 +1,8 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-
-
 
 import {
   ErrorStateMatcher,
@@ -13,20 +11,17 @@ import {
   MatDialogModule,
   MatAutocompleteModule,
   MatFormFieldModule,
-  MatInputModule, ShowOnDirtyErrorStateMatcher
+  MatInputModule, ShowOnDirtyErrorStateMatcher, MAT_DIALOG_DEFAULT_OPTIONS, MAT_DIALOG_DATA
 } from '@angular/material';
-import {MatTableModule} from '@angular/material/table';
-import {MatIconModule} from '@angular/material/icon';
-import {AppComponent} from './app.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DeleteDialogComponent } from './popups/delete-dialog/delete-dialog.component';
-import {RouterModule, Routes} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { AddContactComponent } from './contacts/add-contact/add-contact.component';
 import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
 import { EditContactComponent } from './contacts/edit-contact/edit-contact.component';
-import { HttpErrorHandler } from './shared/htttp-error-handler.service';
-import { MessageService } from './shared/message.service';
-import { HttpRequestService } from './shared/http-request.service';
 import { InMemoryDataService } from './shared/in-memory-data.service';
 
 const appRoutes: Routes = [
@@ -47,7 +42,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
     ),
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false}),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false }),
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -68,9 +63,12 @@ const appRoutes: Routes = [
     MatInputModule
   ],
   entryComponents: [DeleteDialogComponent],
-  providers: [ HttpErrorHandler, MessageService, HttpRequestService, {
-    provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher
-  }],
+  providers: [{
+    provide:  ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher
+  },
+{
+  provide:  MAT_DIALOG_DATA, useValue: {hasBackdrop: false}
+}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
