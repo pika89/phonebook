@@ -3,7 +3,7 @@
   <div style="width: 100%" mat-dialog-content>
     <form (keydown.enter)="saveContact()">
       <mat-form-field>
-        <label>First Name:</label>
+        <label>Name:</label>
         <input matInput [(ngModel)]="user.name" [formControl]="firstNameFormControl" [errorStateMatcher]="matcher">
         <mat-error *ngIf="firstNameFormControl.hasError('required')">
           First name is <strong>required</strong>
@@ -11,7 +11,7 @@
       </mat-form-field>
       <br>
       <mat-form-field>
-        <label>Last Name:</label>
+        <label>Username:</label>
         <input matInput [(ngModel)]="user.username" [formControl]="lastNameFormControl" [errorStateMatcher]="matcher">
       </mat-form-field>
       <br>
@@ -26,6 +26,6 @@
   </div>
   <div mat-dialog-actions>
     <a routerLink="/" mat-button>Back</a>
-    <button mat-button (click)="saveContact()" cdkFocusInitial>Save</button>
+    <button routerLink="/" mat-button (click)="saveContact()" cdkFocusInitial>Save</button>
   </div>
 </mat-card>

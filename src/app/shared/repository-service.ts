@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import { Contacts } from '../contacts/contacts-list/contacts-list.component';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { HttpErrorHandler, HandleError } from '../shared/htttp-error-handler.service';
+import {HttpRequestService} from '../shared/http-request.service';
+import { Contact } from './contact';
+import { MessageService } from './message.service';
 
  
 const httpOptions = {
@@ -14,56 +16,50 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class RepositoryService {
-
-    urlAddress: 'https://jsonplaceholder.typicode.com';
-
+  private contactUrl = 'api/contacts'; 
  
-  constructor(private http: HttpClient) { }
- 
-  public getData = (route: string) => {
-    return this.http.get(this.createCompleteRoute(route, environment.urlAddress));
+  constructor(private http: HttpClient, private httpR:HttpRequestService, httpErrorHandler: HttpErrorHandler, private messageService: MessageService) {
+   }
+
+  getContacts (): Observable<any> {
+    return this.http.get<Contact[]>(this.contactUrl)
+      .pipe(
+      );
   }
 
-  public create = (route: string, body) => {
-    return this.http.post(this.createCompleteRoute(route, environment.urlAddress), body, this.generateHeaders());
-  }
- 
-  public update = (route: string, body) => {
-    return this.http.put(this.createCompleteRoute(route, environment.urlAddress), body, this.generateHeaders());
-  }
- 
-  public delete = (route: string) => {
-    return this.http.delete(this.createCompleteRoute(route, environment.urlAddress));
-  }
-
-
-  deleteHero (contact:Contacts | number): Observable<Contacts> {
+  deleteContact(contact: Contact | number): Observable<Contact>{
     const id = typeof contact === 'number' ? contact : contact.id;
-    const url = `https://jsonplaceholder.typicode.com/users/${id}`;
+    const url = `${this.contactUrl}/${id}`;
+    return this.http.delete<Contact>(url, httpOptions).pipe();
+  }
 
-    return this.http.delete<Contacts>(url, httpOptions).pipe(
-      catchError(this.handleError<Contacts>('deleteContact'))
+  searchContacts(term: string): Observable<Contact[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+    return this.http.get<Contact[]>(`${this.contactUrl}/?name=${term}`).pipe(
     );
   }
 
-  private createCompleteRoute = (route: string, envAddress: string) => {
-    return `${envAddress}/${route}`;
+  addContact (contact: Contact): Observable<Contact> {
+    return this.http.post<Contact>(this.contactUrl, contact, httpOptions).pipe();
   }
- 
+
+  updateContact (contact: Contact): Observable<any> {
+    return this.http.put(this.contactUrl, contact, httpOptions).pipe(
+    );
+  }
+
+  getContact(id: number): Observable<Contact> {
+    const url = `${this.contactUrl}/${id}`;
+    return this.http.get<Contact>(url).pipe(
+    );
+  }
+
   private generateHeaders = () => {
     return {
       headers: new HttpHeaders({'Content-Type': 'application/json'})
     }
   }
 
-  private handleError<T> (operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
 }

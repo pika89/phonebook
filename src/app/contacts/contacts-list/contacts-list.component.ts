@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MatTableDataSource, MatTabLabel} from '@angular/material';
 import {DeleteDialogComponent} from '../../popups/delete-dialog/delete-dialog.component';
-import {CommunicationServiceService} from '../../shared/communication-service.service';
 import { FormControl } from '@angular/forms';
-import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {map, startWith, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import { RepositoryService } from 'src/app/shared/repository-service';
 import { ActivatedRoute,Router, Params } from '@angular/router';
-
+import { environment } from "../../../environments/environment";
+import { Contact } from 'src/app/shared/contact';
 
 export interface Contacts {
   id: number;
@@ -24,45 +24,51 @@ export interface Contacts {
 })
 export class ContactsListComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'username', 'email', 'phone', 'edit', 'delete'];
-  dataSource = new MatTableDataSource<Contacts>();
+  displayedColumns: string[] = ['id', 'name', 'username', 'phone', 'edit', 'delete'];
+  contact: Contact[];
   deleteDialogRef: MatDialogRef<DeleteDialogComponent>;
-  title: string;
+  private searchTerms = new Subject<string>();
+  contacts$: Observable<Contact[]>;
 
 
-  constructor(public dialog: MatDialog, public cs: CommunicationServiceService,private activeRoute: ActivatedRoute, private rs: RepositoryService, private router: Router) {
+  constructor(public dialog: MatDialog,private activeRoute: ActivatedRoute, private rs: RepositoryService, private router: Router) {
   
   }
 
 
   ngOnInit() {
-    this.getAllOwners();
+    this.getContacts();
+    this.contacts$ = this.searchTerms.pipe(
+      // wait 300ms after each keystroke before considering the term
+      debounceTime(300),
+
+      // ignore new term if same as previous term
+      distinctUntilChanged(),
+
+      // switch to new search observable rs time the term changes
+      switchMap((term: string) => this.rs.searchContacts(term)),
+    );
   }
 
-  public getAllOwners = () => {
-    this.rs.getData('users')
-    .subscribe(res => {
-      this.dataSource.data = res as Contacts[];
-    })
+  search(term: string): void {
+    this.searchTerms.next(term);
   }
+
 
   
-  deleteContact(hero: Contacts): void {
-    this.dataSource.data = this.dataSource.data.filter(h => h !== hero);
-    this.rs.deleteHero(hero).subscribe();
+  getContacts(): void {
+    this.rs.getContacts()
+    .subscribe(contacts => this.contact = contacts);
   }
 
-  editContact = (id: any) => {
+  delete(contact: Contact): void {
+    this.contact = this.contact.filter(h => h !== contact);
+    this.rs.deleteContact(contact.id).subscribe();
+  }
+
+  editContact = (id) => {
     let url: string = `/contacts/${id.id}/edit`;
     this.router.navigate([url]);
-  }
-
-  // editContact(element){
-  //   this.cs.passContactObject.next(element);
-  // }
-
-  public doFilter = (value) => {
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
 
 }

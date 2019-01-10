@@ -2,6 +2,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+
+
 
 import {
   ErrorStateMatcher,
@@ -21,6 +24,10 @@ import {RouterModule, Routes} from '@angular/router';
 import { AddContactComponent } from './contacts/add-contact/add-contact.component';
 import { ContactsListComponent } from './contacts/contacts-list/contacts-list.component';
 import { EditContactComponent } from './contacts/edit-contact/edit-contact.component';
+import { HttpErrorHandler } from './shared/htttp-error-handler.service';
+import { MessageService } from './shared/message.service';
+import { HttpRequestService } from './shared/http-request.service';
+import { InMemoryDataService } from './shared/in-memory-data.service';
 
 const appRoutes: Routes = [
   { path: '', component: ContactsListComponent },
@@ -40,6 +47,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
     ),
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {dataEncapsulation: false}),
     BrowserModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -60,7 +68,7 @@ const appRoutes: Routes = [
     MatInputModule
   ],
   entryComponents: [DeleteDialogComponent],
-  providers: [{
+  providers: [ HttpErrorHandler, MessageService, HttpRequestService, {
     provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher
   }],
   bootstrap: [AppComponent]

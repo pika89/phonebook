@@ -1,8 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ErrorStateMatcher} from '@angular/material';
 import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {CommunicationServiceService} from '../../shared/communication-service.service';
 import {Router} from '@angular/router';
+import { Contacts } from '../edit-contact/edit-contact.component';
+import { RepositoryService } from 'src/app/shared/repository-service';
+import { ContactsListComponent } from '../contacts-list/contacts-list.component';
+import { Contact } from 'src/app/shared/contact';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -20,10 +23,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 
 export class AddContactComponent implements OnInit {
-  dataSource: any[] = [];
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
+  dataSource = new Contact();
 
   firstNameFormControl = new FormControl('', [
     Validators.required,
@@ -35,40 +35,23 @@ export class AddContactComponent implements OnInit {
   lastNameFormControl = new FormControl('', []);
 
   matcher = new MyErrorStateMatcher();
-  constructor(public cs: CommunicationServiceService, public router: Router) { }
+  constructor(public router: Router, private rs: RepositoryService) { }
 
 
   ngOnInit() {
-    this.dataSource = JSON.parse(localStorage.getItem('datasource'));
   }
 
-
-  addContact() {
+  addNewContact() {
     this.firstNameFormControl.markAsTouched();
     this.phoneFormControl.markAsTouched();
-
+    
     if (this.firstNameFormControl.valid && this.phoneFormControl.valid) {
-      let newContactObject = {id: this.generateId(),firstName: this.firstName, lastName: this.lastName, phoneNumber: this.phoneNumber};
-
-      this.dataSource.push(newContactObject);
-      localStorage.setItem('datasource', JSON.stringify(this.dataSource));
-      this.cs.passDataToContactList.next(this.dataSource);
+      this.rs.addContact(this.dataSource).subscribe();
       this.router.navigate(['/']);
     }
     else {
       return;
     }
-  }
-
-  generateId(){
-    const lastContact = this.dataSource[this.dataSource.length-1];
-    return lastContact && lastContact.id ? lastContact.id + 1 : 1;
-    // if(lastContact && lastContact.id){
-    //   return lastContact.id + 1;
-    // }
-    // else{
-    //   return 1;
-    // }
   }
 
 }
