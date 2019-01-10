@@ -8,16 +8,16 @@ import { Injectable } from '@angular/core';
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const contacts = [
-        { id: 11, name: 'Mr. Nice', username: 'Nice', phone: 123 },
-        { id: 12, name: 'Narco', username: 'NAR', phone: 4213 },
-        { id: 13, name: 'Bombasto', username: 'Bombo', phone: 315135 },
-        { id: 14, name: 'Celeritas', username: 'Cele', phone: 123123123 },
-        { id: 15, name: 'Magneta', username: 'Magi', phone: 123123123 },
-        { id: 16, name: 'RubberMan', username: 'Rubba', phone: 123123123123 },
-        { id: 17, name: 'Dynama', username: 'Dyno', phone: 51553 },
-        { id: 18, name: 'Dr IQ', username: 'IQ', phone: 1212312 },
-        { id: 19, name: 'Magma', username: 'Mag', phone: 1949401 },
-        { id: 20, name: 'Tornado', username: 'Toro', phone: 29993213 }
+        { id: 11, name: 'Petar Peric', username: 'Pera', phone: 123 },
+        { id: 12, name: 'Nikola Nikolic', username: 'Dzoni', phone: 4213 },
+        { id: 13, name: 'Milos Djokic', username: 'Djoka', phone: 315135 },
+        { id: 14, name: 'Dusan Nikodijevic', username: 'Pika', phone: 123123123 },
+        { id: 15, name: 'Marija Djordjevic', username: 'Mara', phone: 123123123 },
+        { id: 16, name: 'Dragana Lukic', username: 'Gaga', phone: 123123123123 },
+        { id: 17, name: 'Milos Vasic', username: 'Vaske', phone: 51553 },
+        { id: 18, name: 'Dario Stankovic', username: 'Tarzan', phone: 1212312 },
+        { id: 19, name: 'Aleksandar Nikolic', username: 'Aca', phone: 1949401 },
+        { id: 20, name: 'Zoran Pesic', username: 'Zoka', phone: 29993213 }
     ];
     return {contacts};
   }
